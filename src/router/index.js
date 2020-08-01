@@ -5,6 +5,7 @@ import store from "../store/index";
 
 import GameSetup from "../views/GameSetup.vue";
 import GameView from "../views/GameView.vue";
+import Results from "../views/Results.vue";
 
 Vue.use(VueRouter);
 
@@ -13,6 +14,11 @@ const routes = [
 		path: "/",
 		name: "GameSetup",
 		component: GameSetup
+	},
+	{
+		path: "/results",
+		name: "Results",
+		component: Results
 	},
 	{
 		path: "/game",

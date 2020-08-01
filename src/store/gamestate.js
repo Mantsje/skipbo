@@ -4,6 +4,8 @@ import Pile, { PileVisibility } from "../assets/js/core/Pile";
 import { validateMoveTargets, isValidMove } from "@/assets/js/controller/gamerules";
 import { Type } from "@/assets/js/controller/Selection";
 
+import router from "@/router/index";
+
 let state = {
 	activePlayer: -1, // int (index)
 	players: [], // List[Player]
@@ -52,7 +54,7 @@ let mutations = {
 
 		if (selected.playerHandIdx >= 0) {
 			// If it is a card from the player's hand
-			player.playFromHand(selected.playerHandIdx, targetPile);
+			player.playCardFromHand(selected.playerHandIdx, targetPile);
 		} else {
 			// else its either discard pile or goal pile
 			player.playCard(cardToPlay, targetPile);
@@ -83,12 +85,15 @@ let actions = {
 		commit("generateNewFromSettings", rootState.settings);
 		commit("init", rootState.settings);
 	},
-	attemptMove({ commit }, { selected, target }) {
+	attemptMove({ state, commit }, { selected, target }) {
 		return new Promise((resolve, reject) => {
 			validateMoveTargets(state.activePlayer, selected, target).then(
 				() => {
 					if (isValidMove(selected, target)) {
 						commit("move", { selected, target });
+						if (state.players[state.activePlayer].goalPile.size() == 0) {
+							router.push("/results");
+						}
 						if (target.playerDiscardPileIdx >= 0) {
 							commit("endTurn");
 						}

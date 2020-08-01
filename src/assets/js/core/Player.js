@@ -28,7 +28,7 @@ export default class Player {
 	}
 
 	playCardFromHand(idx, toPile) {
-		let card = this.hand.splice(idx, 1);
+		let card = this.hand.splice(idx, 1)[0];
 		this.playCard(card, toPile);
 	}
 
